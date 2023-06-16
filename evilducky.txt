@@ -1,0 +1,81 @@
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.PerspectiveCamera;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
+import javafx.stage.Stage;
+
+public class EvilRubberDucky extends Application {
+
+    @Override
+    public void start(Stage primaryStage) {
+        // Create the root group
+        Group root = new Group();
+
+        // Create a sphere for the body
+        Sphere body = new Sphere(80);
+        body.setTranslateY(80);
+        body.setMaterial(new PhongMaterial(Color.YELLOW));
+
+        // Create the beak
+        TriangleMesh beakMesh = new TriangleMesh();
+        beakMesh.getPoints().addAll(
+                0, 0, 0,            // Point 0 (tip)
+                -30, -40, 40,       // Point 1
+                30, -40, 40         // Point 2
+        );
+        beakMesh.getTexCoords().addAll(0, 0);
+        beakMesh.getFaces().addAll(
+                0, 0, 1, 0, 2, 0  // Front face
+        );
+        MeshView beak = new MeshView(beakMesh);
+        beak.setTranslateY(-40);
+        beak.setMaterial(new PhongMaterial(Color.ORANGE));
+
+        // Create the eyes
+        Circle leftEye = new Circle(15);
+        leftEye.setTranslateX(-30);
+        leftEye.setTranslateY(-40);
+        leftEye.setTranslateZ(60);
+        leftEye.setMaterial(new PhongMaterial(Color.BLACK));
+
+        Circle rightEye = new Circle(15);
+        rightEye.setTranslateX(30);
+        rightEye.setTranslateY(-40);
+        rightEye.setTranslateZ(60);
+        rightEye.setMaterial(new PhongMaterial(Color.BLACK));
+
+        // Create the wings
+        Box leftWing = new Box(20, 80, 120);
+        leftWing.setTranslateX(-70);
+        leftWing.setTranslateY(80);
+        leftWing.setMaterial(new PhongMaterial(Color.YELLOW));
+
+        Box rightWing = new Box(20, 80, 120);
+        rightWing.setTranslateX(70);
+        rightWing.setTranslateY(80);
+        rightWing.setMaterial(new PhongMaterial(Color.YELLOW));
+
+        // Add all the components to the root group
+        root.getChildren().addAll(body, beak, leftEye, rightEye, leftWing, rightWing);
+
+        // Create the scene and set it on the stage
+        Scene scene = new Scene(root, 800, 600, true);
+        scene.setFill(Color.LIGHTBLUE);
+
+        // Create a camera to view the scene
+        PerspectiveCamera camera = new PerspectiveCamera();
+        camera.setTranslateZ(-400);
+        scene.setCamera(camera);
+
+        // Set the scene on the stage
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Evil Rubber Ducky");
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
